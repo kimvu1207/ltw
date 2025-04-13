@@ -1,0 +1,12 @@
+.user-detail-container {
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+    margin-top: 20px;
+  }
+  
+  .user-detail-button {
+    margin-top: 20px;
+  }
+  

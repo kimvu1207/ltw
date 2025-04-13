@@ -1,0 +1,9 @@
+.app-bar {
+  background-color: #1976d2;
+}
+
+.app-bar-title {
+  flex: 1;
+  font-weight: bold;
+}
+
