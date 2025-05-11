@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Divider, Box, Paper } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
-import models from "../../modelData/models";
+import { getPhotosByUser, getUserById } from "../../api/api";
 import "./styles.css";
 
 function UserPhotos() {
   const { userId } = useParams();
-  const photos = models.photoOfUserModel(userId);
-  const user = models.userModel(userId);
+  const [photos, setPhotos] = useState([]);
+  const [user, setUser] = useState(null);
 
-  if (!photos) {
-    return (
-      <Typography variant="body1">No photos found for this user.</Typography>
-    );
-  }
+  useEffect(() => {
+    getUserById(userId).then(setUser);
+    getPhotosByUser(userId).then(setPhotos);
+  }, [userId]);
+
+  if (!user) return <Typography>Loading...</Typography>;
 
   return (
     <Box p={2}>
@@ -38,16 +39,13 @@ function UserPhotos() {
             {new Date(photo.date_time).toLocaleString()}
           </Typography>
 
-          {photo.comments && photo.comments.length > 0 && (
+          {photo.comments?.length > 0 && (
             <Box mt={2} px={2}>
               <Typography variant="subtitle2">Comments:</Typography>
               {photo.comments.map((comment) => (
                 <Box key={comment._id} className="comment-box">
                   <Typography variant="body2">
-                    <Link
-                      to={`/users/${comment.user._id}`}
-                      className="comment-author"
-                    >
+                    <Link to={`/users/${comment.user._id}`} className="comment-author">
                       {comment.user.first_name} {comment.user.last_name}
                     </Link>
                     : {comment.comment}

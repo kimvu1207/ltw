@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Button } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
-import models from "../../modelData/models";
+import { getUserById } from "../../api/api";
 import "./styles.css";
 
 function UserDetail() {
   const { userId } = useParams();
-  const user = models.userModel(userId);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    getUserById(userId).then(setUser);
+  }, [userId]);
+
+  if (!user) return <Typography>Loading...</Typography>;
 
   return (
     <div className="user-detail-container">
